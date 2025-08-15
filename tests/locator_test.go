@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/Lord-Chris/playwright-go"
 	"github.com/stretchr/testify/require"
 )
 

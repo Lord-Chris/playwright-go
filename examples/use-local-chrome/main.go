@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/Lord-Chris/playwright-go"
 )
 
 func main() {

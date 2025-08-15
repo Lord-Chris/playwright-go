@@ -12,8 +12,8 @@ import (
 
 	_ "image/png"
 
+	"github.com/Lord-Chris/playwright-go"
 	"github.com/orisano/pixelmatch"
-	"github.com/playwright-community/playwright-go"
 )
 
 // global variables, can be used in any tests

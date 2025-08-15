@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/Lord-Chris/playwright-go"
 )
 
 type remoteServer struct {

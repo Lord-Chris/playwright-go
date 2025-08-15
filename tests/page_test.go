@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Lord-Chris/playwright-go"
 	"github.com/h2non/filetype"
-	"github.com/playwright-community/playwright-go"
 	"github.com/stretchr/testify/require"
 )
 

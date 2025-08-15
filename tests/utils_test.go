@@ -20,8 +20,8 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/Lord-Chris/playwright-go"
 	"github.com/coder/websocket"
-	"github.com/playwright-community/playwright-go"
 	"github.com/stretchr/testify/require"
 )
 

@@ -8,7 +8,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/Lord-Chris/playwright-go"
 )
 
 func assertErrorToNilf(message string, err error) {
