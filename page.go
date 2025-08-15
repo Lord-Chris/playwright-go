@@ -1109,20 +1109,23 @@ func (p *pageImpl) ExposeBinding(name string, binding BindingCallFunction, handl
 }
 
 func (p *pageImpl) RemoveBinding(name string) error {
-	if _, ok := p.bindings.Load(name); !ok {
-		return fmt.Errorf("Function '%s' has not been registered", name)
+	if _, ok := p.bindings.Load(name); ok {
+		_, err := p.channel.Send("removeBinding", map[string]interface{}{
+			"name": name,
+		})
+		if err != nil {
+			return err
+		}
+		p.bindings.Delete(name)
+		return nil
 	}
-	if _, ok := p.browserContext.bindings.Load(name); !ok {
-		return fmt.Errorf("Function '%s' has not been registered in the browser context", name)
+	
+	// Binding not on page, check if it's on the context and delegate
+	if _, ok := p.browserContext.bindings.Load(name); ok {
+		return p.browserContext.RemoveBinding(name)
 	}
-	_, err := p.channel.Send("removeBinding", map[string]interface{}{
-		"name": name,
-	})
-	if err != nil {
-		return err
-	}
-	p.bindings.Delete(name)
-	return nil
+	
+	return fmt.Errorf("Function '%s' has not been registered", name)
 }
 
 func (p *pageImpl) SelectOption(selector string, values SelectOptionValues, options ...PageSelectOptionOptions) ([]string, error) {

@@ -152,3 +152,29 @@ func TestPageBindingsNoRace(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, 42, ret)
 }
+
+func TestRemoveBinding(t *testing.T) {
+	BeforeEach(t)
+
+	err := context.ExposeBinding("add", func(source *playwright.BindingSource, args ...interface{}) interface{} {
+		a := args[0].(int)
+		b := args[1].(int)
+		return a + b
+	})
+	require.NoError(t, err)
+
+	page, err := context.NewPage()
+	require.NoError(t, err)
+
+	ret, err := page.Evaluate(`() => window.add(5, 6)`)
+	require.NoError(t, err)
+	require.Equal(t, 11, ret)
+
+	err = context.RemoveBinding("add")
+	require.NoError(t, err)
+
+	_, err = page.Evaluate(`() => window.add(5, 6)`)
+	require.Error(t, err)
+	require.True(t, strings.Contains(err.Error(), "ReferenceError") || strings.Contains(err.Error(), "TypeError"))
+}
+
