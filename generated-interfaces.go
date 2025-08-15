@@ -334,6 +334,16 @@ type BrowserContext interface {
 	// 2. binding: Callback function that will be called in the Playwright's context.
 	ExposeFunction(name string, binding ExposedFunction) error
 
+	// Removes a function which was previously registered with [BrowserContext.ExposeBinding] from the browser context.
+	//
+	//  name: Name of the function to remove.
+	RemoveBinding(name string) error
+
+	// Removes a function which was previously registered with [BrowserContext.ExposeFunction] from the browser context.
+	//
+	//  name: Name of the function to remove.
+	RemoveFunction(name string) error
+
 	// Grants specified permissions to the browser context. Only grants corresponding permissions to the given origin if
 	// specified.
 	//
@@ -3381,7 +3391,17 @@ type Page interface {
 	// 2. binding: Callback function which will be called in Playwright's context.
 	ExposeFunction(name string, binding ExposedFunction) error
 
-	// This method waits for an element matching “[object Object]”, waits for [actionability] checks,
+	// Removes a function which was previously registered with [Page.ExposeBinding] from the page.
+	//
+	//  name: Name of the function to remove.
+	RemoveBinding(name string) error
+
+	// Removes a function which was previously registered with [Page.ExposeFunction] from the page.
+	//
+	//  name: Name of the function to remove.
+	RemoveFunction(name string) error
+
+	// This method waits for an element matching "[object Object]", waits for [actionability] checks,
 	// focuses the element, fills it and triggers an `input` event after filling. Note that you can pass an empty string
 	// to clear the input field.
 	// If the target element is not an `<input>`, `<textarea>` or `[contenteditable]` element, this method throws an

@@ -266,6 +266,24 @@ func (b *browserContextImpl) ExposeFunction(name string, binding ExposedFunction
 	})
 }
 
+func (b *browserContextImpl) RemoveBinding(name string) error {
+	if _, ok := b.bindings.Load(name); !ok {
+		return fmt.Errorf("Function '%s' has not been registered", name)
+	}
+	_, err := b.channel.Send("removeBinding", map[string]interface{}{
+		"name": name,
+	})
+	if err != nil {
+		return err
+	}
+	b.bindings.Delete(name)
+	return nil
+}
+
+func (b *browserContextImpl) RemoveFunction(name string) error {
+	return b.RemoveBinding(name)
+}
+
 func (b *browserContextImpl) Route(url interface{}, handler routeHandler, times ...int) error {
 	b.Lock()
 	defer b.Unlock()

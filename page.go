@@ -1082,6 +1082,10 @@ func (p *pageImpl) ExposeFunction(name string, binding ExposedFunction) error {
 	})
 }
 
+func (p *pageImpl) RemoveFunction(name string) error {
+	return p.RemoveBinding(name)
+}
+
 func (p *pageImpl) ExposeBinding(name string, binding BindingCallFunction, handle ...bool) error {
 	needsHandle := false
 	if len(handle) == 1 {
@@ -1101,6 +1105,23 @@ func (p *pageImpl) ExposeBinding(name string, binding BindingCallFunction, handl
 		return err
 	}
 	p.bindings.Store(name, binding)
+	return nil
+}
+
+func (p *pageImpl) RemoveBinding(name string) error {
+	if _, ok := p.bindings.Load(name); !ok {
+		return fmt.Errorf("Function '%s' has not been registered", name)
+	}
+	if _, ok := p.browserContext.bindings.Load(name); !ok {
+		return fmt.Errorf("Function '%s' has not been registered in the browser context", name)
+	}
+	_, err := p.channel.Send("removeBinding", map[string]interface{}{
+		"name": name,
+	})
+	if err != nil {
+		return err
+	}
+	p.bindings.Delete(name)
 	return nil
 }
 
