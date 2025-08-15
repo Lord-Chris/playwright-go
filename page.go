@@ -1120,11 +1120,6 @@ func (p *pageImpl) RemoveBinding(name string) error {
 		return nil
 	}
 	
-	// Binding not on page, check if it's on the context and delegate
-	if _, ok := p.browserContext.bindings.Load(name); ok {
-		return p.browserContext.RemoveBinding(name)
-	}
-	
 	return fmt.Errorf("Function '%s' has not been registered", name)
 }
 
